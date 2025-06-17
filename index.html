@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>辅礽考试院</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: url('https://amlhdsan.github.io/frmj/background.jpg') center/cover fixed;
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .liquid-glass:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(67, 56, 202, 0.3), rgba(147, 51, 234, 0.3));
+            z-index: -1;
+        }
+
+        .title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 2s ease-out;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            animation: fadeInUp 2s ease-out 0.5s both;
+        }
+
+        .year {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            animation: fadeInUp 2s ease-out 1s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 80px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .members-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .members-card {
+            padding: 40px;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.6s ease-out;
+        }
+
+        .members-card.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .intro-card {
+            padding: 40px;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.6s ease-out;
+        }
+
+        .intro-card.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .member-group {
+            margin-bottom: 25px;
+        }
+
+        .member-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fbbf24;
+        }
+
+        .member-list {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .works-section {
+            text-align: center;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .work-item {
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .work-item.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .work-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #60a5fa;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            line-height: 1.8;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-arrow {
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .members-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .section {
+                padding: 60px 15px;
+            }
+
+            .members-card, .intro-card {
+                padding: 25px;
+            }
+
+            .works-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .work-item {
+                padding: 20px;
+            }
+        }
+
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/background.jpg') center/cover no-repeat;
+            z-index: -2;
+        }
+
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(30, 41, 59, 0.8) 0%,
+                rgba(51, 65, 85, 0.6) 50%,
+                rgba(15, 23, 42, 0.9) 100%
+            );
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="parallax-bg"></div>
+    <div class="gradient-overlay"></div>
+
+    <section class="hero">
+        <h1 class="title">辅礽考试院</h1>
+        <p class="subtitle">Fureng Academy of Examination</p>
+        <p class="year">始于 2024</p>
+        
+        <div class="scroll-indicator">
+            <div class="scroll-arrow">↓</div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="members-section">
+                <div class="members-card liquid-glass">
+                    <h2 class="section-title">组织成员</h2>
+                    
+                    <div class="member-group">
+                        <div class="member-title">院长</div>
+                        <div class="member-list">缪语博</div>
+                    </div>
+
+                    <div class="member-group">
+                        <div class="member-title">副院长</div>
+                        <div class="member-list">陈宇涵</div>
+                    </div>
+
+                    <div class="member-group">
+                        <div class="member-title">阅卷组组长</div>
+                        <div class="member-list">童彦宸</div>
+                    </div>
+
+                    <div class="member-group">
+                        <div class="member-title">骨干成员</div>
+                        <div class="member-list">缪语博, 陈宇涵, 童彦宸, 高扬, 窦世杰, 方逸宸</div>
+                    </div>
+
+                    <div class="member-group">
+                        <div class="member-title">出题团队 (排名不分先后)</div>
+                        <div class="member-list">
+                            陈宇涵, 缪语博, 丁许萌, 高扬,<br>
+                            窦世杰, 胡展博, 钱汇泉, 朱靖宇,<br>
+                            赵瑞琪, 周仁龙, 童彦宸
+                        </div>
+                    </div>
+
+                    <div class="member-group">
+                        <div class="member-title">指导教师</div>
+                        <div class="member-list">Eric-熊, 姚佳琳</div>
+                    </div>
+                </div>
+
+                <div class="intro-card liquid-glass">
+                    <h2 class="section-title">关于我们</h2>
+                    <p style="font-size: 1.2rem; line-height: 1.8; opacity: 0.9;">
+                        铜陵一中 2024 级学生<br><br>
+                        热爱数学<br><br>
+                        热爱拷打老师
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section works-section">
+        <div class="container">
+            <h2 class="section-title">我们的作品</h2>
+            
+            <div class="works-grid">
+                <a href="/1.pdf" class="work-item liquid-glass" target="_blank">
+                    <div class="work-title">2026辅礽高中数学联赛</div>
+                    <p>挑战极限，探索数学之美</p>
+                </a>
+
+                <a href="/2.pdf" class="work-item liquid-glass" target="_blank">
+                    <div class="work-title">2025铜陵市高考第三次调研考试</div>
+                    <p>精心打磨的模拟试题</p>
+                </a>
+
+                <a href="/fror" class="work-item liquid-glass">
+                    <div class="work-title">2025 辅礽复仇赛</div>
+                    <p>智慧与勇气的较量</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content liquid-glass" style="padding: 40px; border-radius: 15px;">
+            <p>© 2024-2025 辅礽考试院 Fureng Academy of Examination</p>
+            <p>致力于数学教育的创新与发展</p>
+            <p>让每一道题目都闪闪发光 ✨</p>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有需要动画的元素
+        document.querySelectorAll('.members-card, .intro-card, .work-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 平滑滚动到下一个部分
+        document.querySelector('.scroll-indicator').addEventListener('click', () => {
+            document.querySelector('.section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // 添加视差效果
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.parallax-bg');
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `translateY(${speed}px)`;
+        });
+
+        // 增强液态玻璃效果
+        document.querySelectorAll('.liquid-glass').forEach(element => {
+            element.addEventListener('mousemove', (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+            });
+        });
+
+        // 添加页面加载动画
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>
