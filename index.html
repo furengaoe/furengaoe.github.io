@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: url('https://furengaoe.github.io/frmj/background.jpg') center/cover fixed;
+            background: url('https://furengaoe.github.io/background.jpg') center/cover fixed;
             color: #ffffff;
             overflow-x: hidden;
             scroll-behavior: smooth;
@@ -416,13 +416,7 @@
             });
         });
 
-        // 添加视差效果
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.parallax-bg');
-            const speed = scrolled * 0.5;
-            parallax.style.transform = `translateY(${speed}px)`;
-        });
+        // 背景固定，不添加视差效果
 
         // 增强液态玻璃效果
         document.querySelectorAll('.liquid-glass').forEach(element => {
