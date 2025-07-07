@@ -1,1 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 辅礽复仇赛 - 官方网站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 浮动数学符号动画 */
+        .floating-symbols {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .symbol {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 2em;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* 头部样式 */
+        header {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.3)); }
+            100% { filter: drop-shadow(0 0 20px rgba(255, 217, 61, 0.5)); }
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffd93d;
+        }
+
+        /* 主要内容区域 */
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleFloat 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* PDF按钮样式 */
+        .pdf-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .pdf-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pdf-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .pdf-btn:hover::before {
+            left: 100%;
+        }
+
+        .pdf-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .pdf-btn.answer {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
+        }
+
+        .pdf-btn.answer:hover {
+            box-shadow: 0 12px 35px rgba(78, 205, 196, 0.4);
+        }
+
+        /* 卡片样式 */
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 40px 0;
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: slideInUp 0.8s ease-out forwards;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .section:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        .section:nth-child(odd) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            color: #ffd93d;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+            font-weight: 600;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 2px;
+        }
+
+        /* 参与者卡片 */
+        .participants {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .participant-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .participant-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ffd93d);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .participant-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .participant-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .participant-card h3 {
+            color: #ffd93d;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .participant-card p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .participant-card strong {
+            color: #4ecdc4;
+        }
+
+        /* 状态横幅 */
+        .status-banner {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: #333;
+            padding: 25px;
+            text-align: center;
+            margin: 40px 0;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.2em;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+            animation: statusPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* 规则列表 */
+        .rules {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 4px solid #4ecdc4;
+        }
+
+        .rules ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .rules li {
+            margin: 15px 0;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #ff6b6b;
+            transition: all 0.3s ease;
+        }
+
+        .rules li:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        /* 实时更新 */
+        .live-update {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 18px;
+            border-radius: 10px;
+            margin: 12px 0;
+            border-left: 4px solid #4ecdc4;
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .live-update:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .logo {
+                font-size: 2em;
+            }
+            
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .pdf-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .pdf-btn {
+                width: 280px;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .participants {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-symbols" id="floatingSymbols"></div>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">2025 辅礽复仇赛</div>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#intro">赛事介绍</a></li>
+                        <li><a href="#coaches">参赛教练</a></li>
+                        <li><a href="#students">学生团队</a></li>
+                        <li><a href="#progress">比赛进程</a></li>
+                        <li><a href="#rules">竞赛规则</a></li>
+                        <li><a href="#live">实时更新</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="container">
+            <h1>2025 辅礽复仇赛</h1>
+            <p>一场别开生面的数学竞技盛会，角色互换的学术挑战，师生同台的智慧较量</p>
+            
+            <div class="pdf-buttons">
+                <a href="#" class="pdf-btn" onclick="downloadPDF('questions')">
+                    📋 竞赛题目
+                </a>
+                <a href="#" class="pdf-btn answer" onclick="downloadPDF('answers')">
+                    📝 参考答案
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="status-banner">
+            🏆 比赛正在进行中 - 实时追踪竞赛动态
+        </div>
+
+        <div class="section" id="intro">
+            <h2>赛事介绍</h2>
+            <p>「2025 辅礽复仇赛」是一项创新性的数学竞技活动，采用师生角色互换的独特形式。在这场比赛中，平时负责出题的数学教练们将成为答题者，而学生们则担任出题者的角色。</p>
+            <br>
+            <p>本次比赛旨在通过角色互换的方式，促进师生之间的深度交流，增强数学学习的互动性和趣味性。参赛教练需要在规定时间内解答由学生精心设计的数学题目，展现他们的专业素养和临场应变能力。</p>
+            <br>
+            <p>这不仅是一场学术竞赛，更是一次教育理念的创新实践，体现了现代教育中师生平等、互相学习的教育理念。</p>
+        </div>
+
+        <div class="section" id="coaches">
+            <h2>参赛教练</h2>
+            <div class="participants">
+                <div class="participant-card">
+                    <h3>熊世伟教练</h3>
+                    <p><strong>专业领域：</strong>高中数学与高中竞赛</p>
+                    <p><strong>教学经验：</strong>150年</p>
+                    <p><strong>学术成果：</strong>累计培养多位省级和国家级数学竞赛优秀学员，CMO 金牌🏅教练</p>
+                    <p><strong>教学特色：</strong>注重逻辑思维培养，注重学生数学兴趣的培养</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="students">
+            <h2>学生出题团队</h2>
+            <div class="participants">
+                <div class="participant-card">
+                    <h3>主编团队</h3>
+                    <p><strong>团队成员：</strong>主编：缪语博；副主编：陈宇涵</p>
+                    <p><strong>责任：</strong>整体规划</p>
+                </div>
+                <div class="participant-card">
+                    <h3>供题团队</h3>
+                    <p><strong>团队成员：</strong>缪语博，陈宇涵，窦世杰，高扬，童彦宸，方逸宸</p>
+                    <p><strong>责任：</strong>当然是供题咯</p>
+                </div>
+                <div class="participant-card">
+                    <h3>后勤团队</h3>
+                    <p><strong>团队成员：</strong>陈宇涵，窦世杰，高扬，童彦宸，方逸宸</p>
+                    <p><strong>责任：</strong>打印试卷等后勤工作</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="progress">
+            <h2>比赛进程</h2>
+            <div class="rules">
+                <h3>第一阶段：准备环节</h3>
+                <ul>
+                    <li>学生团队题目设计与审核</li>
+                    <li>教练团队赛前准备与热身</li>
+                    <li>竞赛规则最终确认</li>
+                </ul>
+                
+                <h3>第二阶段：正式比赛</h3>
+                <ul>
+                    <li>六轮竞赛，每轮两天</li>
+                    <li>涵盖数论、代数、几何、概率等领域</li>
+                    <li>实时评分与过程记录</li>
+                </ul>
+                
+                <h3>第三阶段：总结交流</h3>
+                <ul>
+                    <li>题目解析与方法讨论</li>
+                    <li>师生经验分享与交流</li>
+                    <li>竞赛总结与成果展示</li>
+                    <li>颁奖典礼（地点：铜陵一中）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="rules">
+            <h2>竞赛规则</h2>
+            <div class="rules">
+                <ul>
+                    <li>参赛教练须在规定时间内独立完成所有题目</li>
+                    <li>允许使用常规文具，禁止使用电子设备</li>
+                    <li>题目解答过程需详细展示推理步骤</li>
+                    <li>评分标准：正确性60%、过程完整性30%、创新性10%</li>
+                    <li>比赛全程不录像，确保不公平公正</li>
+                    <li>学生团队可在指定时间提供适当提示</li>
+                    <li>竞赛结束后进行题目讲解与经验分享</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="live">
+            <h2>实时更新</h2>
+            <div id="live-updates">
+                <div class="live-update">
+                    <strong>6 月 15 日 </strong> - 熊世伟教练签署比赛承诺书与参赛者协议
+                </div>
+                <div class="live-update">
+                    <strong>6 月 16 日</strong> - 出题团队完成题目命制与审核并打印试卷
+                </div>
+                <div class="live-update">
+                    <strong>7 月 1 日</strong> - 试印版印刷完毕
+                </div>
+                <div class="live-update">
+                    <strong>7 月 9 日</strong> - 主编特供版印刷完毕
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 辅礽复仇赛组委会 | 上课认真听，下课刷抖音</p>
+        </div>
+    </footer>
+
+    <script>
+        // 浮动数学符号
+        function createFloatingSymbols() {
+            const symbols = ['∑', '∫', '∂', '∞', 'π', 'α', 'β', 'γ', 'δ', 'θ', 'λ', 'μ', 'σ', 'φ', 'ψ', 'ω', '√', '≈', '≠', '≤', '≥', '⊕', '⊗', '∇', '∆'];
+            const container = document.getElementById('floatingSymbols');
+            
+            setInterval(() => {
+                const symbol = document.createElement('div');
+                symbol.className = 'symbol';
+                symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                symbol.style.left = Math.random() * 100 + '%';
+                symbol.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                symbol.style.fontSize = (Math.random() * 1.5 + 1) + 'em';
+                
+                container.appendChild(symbol);
+                
+                setTimeout(() => {
+                    if (symbol.parentNode) {
+                        symbol.parentNode.removeChild(symbol);
+                    }
+                }, 25000);
+            }, 2000);
+        }
+
+        // PDF下载功能
+        function downloadPDF(type) {
+    // 两个 PDF 文件源分开写
+    const questionURL = "https://furengaoe.github.io/for/2025/2025%20辅礽复仇赛标答.pdf";
+    const answerURL = "https://furengaoe.github.io/for/2025/2025%20辅礽复仇赛标答.pdf";
+    const btn = event.target;
+    const originalText = btn.textContent;
+    let url = "";
+
+    if (type === 'questions') {
+        url = questionURL;
+        btn.textContent = '📋 正在打开...';
+    } else if (type === 'answers') {
+        url = answerURL;
+        btn.textContent = '📝 正在打开...';
+    }
+    btn.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.pointerEvents = 'auto';
+        // 在新标签页打开 PDF
+        window.open(url, '_blank');
+    }, 1000);
+}
+
+        // 自动更新实时信息
+        function addLiveUpdate() {
+            const updates = [
+                "题目命制完成",
+                "答案审核通过",
+                "试卷打印完毕",
+                "教练们开始赛前热身",
+                "教练们展现出深厚的数学功底",
+                "学生们对教练的表现给予高度评价",
+                "现场观众对比赛形式表示赞赏",
+                "专家评委对题目质量给予肯定"
+            ];
+            
+            const now = new Date();
+            const timeStr = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+            const randomUpdate = updates[Math.floor(Math.random() * updates.length)];
+            
+            const updateDiv = document.createElement('div');
+            updateDiv.className = 'live-update';
+            updateDiv.innerHTML = `<strong>${timeStr}</strong> - ${randomUpdate}`;
+            
+            const updatesContainer = document.getElementById('live-updates');
+            updatesContainer.insertBefore(updateDiv, updatesContainer.firstChild);
+            
+            // 保持最多6条更新
+            if (updatesContainer.children.length > 6) {
+                updatesContainer.removeChild(updatesContainer.lastChild);
+            }
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingSymbols();
+            
+            // 每45秒添加一条更新
+            setInterval(addLiveUpdate, 45000);
+            
+            // 为卡片添加进入动画
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
