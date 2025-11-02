@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>辅礽麻将大赛 - 规则说明</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'LXGW WenKai', 'STKaiti', 'KaiTi', 'SimSun', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(41, 128, 185, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(142, 68, 173, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: clamp(28px, 5vw, 56px);
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: clamp(14px, 3vw, 20px);
+            opacity: 0.85;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .header .institute {
+            font-size: clamp(12px, 2.5vw, 16px);
+            opacity: 0.7;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: clamp(25px, 4vw, 45px);
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(102, 126, 234, 0.25);
+        }
+
+        .card-title {
+            color: #2c3e50;
+            font-size: clamp(22px, 4vw, 36px);
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .card-title::before {
+            content: '§';
+            font-size: clamp(28px, 5vw, 42px);
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .rule-item {
+            margin: 25px 0;
+            padding: 20px 25px;
+            background: linear-gradient(to right, rgba(102, 126, 234, 0.05), transparent);
+            border-left: 5px solid #667eea;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .rule-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .rule-item:hover {
+            background: linear-gradient(to right, rgba(102, 126, 234, 0.1), transparent);
+            transform: translateX(8px);
+        }
+
+        .rule-item:hover::before {
+            width: 8px;
+        }
+
+        .rule-name {
+            font-size: clamp(17px, 3.5vw, 24px);
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .rule-desc {
+            color: #555;
+            font-size: clamp(15px, 3vw, 19px);
+            line-height: 1.8;
+            letter-spacing: 0.5px;
+        }
+
+        .multiplier {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: clamp(13px, 2.5vw, 17px);
+            margin: 5px 5px 5px 0;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .multiplier:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .important-multiplier {
+            display: inline-block;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: clamp(15px, 3vw, 20px);
+            margin: 5px 5px 5px 0;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            animation: pulse 2.5s ease-in-out infinite;
+            letter-spacing: 1px;
+        }
+
+        .special-rule {
+            background: linear-gradient(to right, rgba(231, 76, 60, 0.08), transparent);
+            border-left-color: #e74c3c;
+            border-width: 5px;
+        }
+
+        .special-rule::before {
+            background: linear-gradient(180deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .formula {
+            background: rgba(52, 73, 94, 0.05);
+            padding: 20px 25px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: clamp(15px, 3vw, 19px);
+            overflow-x: auto;
+            border: 1px solid rgba(52, 73, 94, 0.1);
+            border-left: 4px solid #34495e;
+            line-height: 2;
+        }
+
+        .example {
+            background: linear-gradient(135deg, rgba(241, 196, 15, 0.08) 0%, rgba(243, 156, 18, 0.05) 100%);
+            padding: 18px 22px;
+            border-radius: 10px;
+            margin: 18px 0;
+            border-left: 4px solid #f39c12;
+            border: 1px solid rgba(243, 156, 18, 0.15);
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: #d68910;
+            margin-bottom: 10px;
+            font-size: clamp(15px, 3vw, 19px);
+            letter-spacing: 1px;
+        }
+
+        .example-content {
+            color: #555;
+            font-size: clamp(14px, 2.8vw, 17px);
+            line-height: 1.8;
+            letter-spacing: 0.5px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab {
+            padding: 14px 32px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: clamp(15px, 3vw, 19px);
+            font-weight: 600;
+            color: #34495e;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .tab:hover::before {
+            left: 100%;
+        }
+
+        .tab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .note {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 193, 7, 0.08) 100%);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 18px 0;
+            font-size: clamp(14px, 2.8vw, 17px);
+            line-height: 1.8;
+            color: #555;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .highlight {
+            color: #e74c3c;
+            font-weight: 700;
+            padding: 2px 6px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 4px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+            }
+        }
+
+        .theorem-box {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 0%, rgba(41, 128, 185, 0.08) 100%);
+            padding: 20px 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            border-left: 5px solid #3498db;
+        }
+
+        .theorem-title {
+            font-weight: 700;
+            color: #2980b9;
+            margin-bottom: 12px;
+            font-size: clamp(16px, 3vw, 20px);
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 30px 15px;
+                margin-bottom: 30px;
+            }
+
+            .card {
+                margin-bottom: 20px;
+            }
+
+            .rule-item {
+                padding: 15px 18px;
+                margin: 18px 0;
+            }
+
+            .tabs {
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .tab {
+                padding: 12px 24px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>第一届辅礽麻将大赛</h1>
+            <div class="subtitle">竞赛规则与倍率体系</div>
+            <div class="institute">辅礽考试院 · 辅礽概率与期望及博弈论最优性策略问题研究所</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('hufa')">第一章 · 胡法规则</button>
+            <button class="tab" onclick="switchTab('beishu')">第二章 · 倍率体系</button>
+            <button class="tab" onclick="switchTab('special')">第三章 · 特殊规则</button>
+        </div>
+
+        <div id="hufa" class="content-section active">
+            <div class="card">
+                <h2 class="card-title">胡法规则</h2>
+                
+                <div class="theorem-box">
+                    <div class="theorem-title">定义 1.1 (基本牌组)</div>
+                    设顺子和三个一样的牌为集合 $A$，对子为集合 $B$。配子可作为通配符使用于任意牌型构建。
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-name">定理 1.1 普通胡牌</div>
+                    <div class="rule-desc">牌型满足 $|A| = 4 \land |B| = 1$ 时构成普通胡牌。</div>
+                    <span class="multiplier">基础倍率 1×</span>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 1.1</div>
+                        <div class="example-content">
+                            设牌组为：$\{123\text{万}, 456\text{条}, 789\text{筒}, \text{东东东}, 88\text{条}\}$<br>
+                            验证：$|A| = 4$ (三个顺子 + 一个刻子)，$|B| = 1$ (一个对子)<br>
+                            结论：满足定理 1.1，构成普通胡牌，倍率系数 $k = 1$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-name">定理 1.2 七小对</div>
+                    <div class="rule-desc">牌型满足 $|B| = 7 \land |A| = 0$ 时构成七小对。</div>
+                    <span class="multiplier">普通倍率 3×</span>
+                    <span class="multiplier">跑风倍率 4×</span>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 1.2</div>
+                        <div class="example-content">
+                            设牌组为：$\{11\text{万}, 22\text{万}, 33\text{条}, 44\text{条}, 55\text{筒}, 66\text{筒}, 77\text{筒}\}$<br>
+                            验证：$|B| = 7$，$|A| = 0$<br>
+                            结论：满足定理 1.2，倍率系数 $k = 3$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 1.3 国士无双（十三幺）</div>
+                    <div class="rule-desc">设幺九牌集合 $Y = \{1, 9\}_{\text{万条筒}} \cup \{\text{东南西北中发白}\}$，当手牌包含 $|Y| = 13$ 且其中一种成对时构成国士无双。</div>
+                    <span class="important-multiplier">听牌 24×</span>
+                    <span class="important-multiplier">胡牌 48×</span>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 1.3</div>
+                        <div class="example-content">
+                            设牌组为：$\{1\text{万}, 9\text{万}, 1\text{条}, 9\text{条}, 1\text{筒}, 9\text{筒}, \text{东, 南, 西, 北, 中, 发, 白}\}$<br>
+                            验证：幺九牌种类数 $= 13$，其中一种（如东）成对<br>
+                            结论：满足定理 1.3，听牌状态 $k = 24$，胡牌状态 $k = 48$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 1.4 十三不碰</div>
+                    <div class="rule-desc">设数字牌必须包含三组同花色数字：</div>
+                    <div class="formula">
+                        $\exists s_1, s_2, s_3 \in \{\text{万, 条, 筒}\}, \text{ s.t. }$
+                        $\{1, 4, 7\}_{s_1} \subset H, \quad \{2, 5, 8\}_{s_2} \subset H, \quad \{3, 6, 9\}_{s_3} \subset H$
+                        其中 $s_1, s_2, s_3$ 可以相同或不同，加上不成对的 5 张字牌
+                    </div>
+                    <span class="important-multiplier">听牌 12×</span>
+                    <span class="important-multiplier">胡牌 18×</span>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 1.4</div>
+                        <div class="example-content">
+                            <strong>合法牌组：</strong>$\{1\text{万}, 4\text{万}, 7\text{万}, 2\text{条}, 5\text{条}, 8\text{条}, 3\text{筒}, 6\text{筒}, 9\text{筒}, \text{东, 南, 西, 北, 中}\}$<br>
+                            验证：<br>
+                            • $\{1, 4, 7\}_{\text{万}}$ ✓（一四七万同花色）<br>
+                            • $\{2, 5, 8\}_{\text{条}}$ ✓（二五八条同花色）<br>
+                            • $\{3, 6, 9\}_{\text{筒}}$ ✓（三六九筒同花色）<br>
+                            • 字牌：5 张不成对 ✓<br>
+                            结论：满足定理 1.4，倍率系数 $k = 18$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 1.5 跑风</div>
+                    <div class="rule-desc">手牌数量达到 $|H| = 34$ 且对任意牌 $x$，均满足胡牌条件。</div>
+                    <span class="important-multiplier">基础倍率 2×</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="beishu" class="content-section">
+            <div class="card">
+                <h2 class="card-title">基础倍率体系</h2>
+                
+                <div class="theorem-box">
+                    <div class="theorem-title">定义 2.1 (倍率函数)</div>
+                    普通胡法定义为单位倍率 $k_0 = 1$。所有倍率为全局倍率，单局得分 $S = k \cdot p$，其中 $k$ 为倍率系数，$p$ 为基础分值。
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-name">定理 2.1 杠倍率递推公式</div>
+                    <div class="rule-desc">
+                        设该局普通杠次数为 $x \in \mathbb{N}$，跑风杠次数为 $y \in \{0,1\}$，杠开次数为 $z \in \{0,1\}$，且满足约束 $yz = 0$
+                    </div>
+                    <div class="formula">
+                        基础倍率函数：
+                        $k_{\text{base}}(x) = 2^{x-1}, \quad x \geq 1$
+                        
+                        附加倍率函数：
+                        $k_{\text{extra}}(y, z) = \begin{cases}
+                        3 & \text{if } z = 1 \land y = 0 \text{ (杠开非跑风)} \\
+                        4 & \text{if } y = 1 \text{ (跑风杠)} \\
+                        1 & \text{otherwise}
+                        \end{cases}$
+                        
+                        总倍率：
+                        $k_{\text{total}} = k_{\text{base}}(x) \times k_{\text{extra}}(y, z)$
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 2.1</div>
+                        <div class="example-content">
+                            <strong>情况 A：</strong>普通杠 $x = 2$ 次<br>
+                            计算：$k = 2^{2-1} = 2$ 倍<br><br>
+                            
+                            <strong>情况 B：</strong>普通杠 $x = 3$ 次，杠开 $z = 1$<br>
+                            计算：$k_{\text{base}} = 2^{3-1} = 4$<br>
+                            $k_{\text{extra}} = 3$（杠开）<br>
+                            总倍率：$k = 4 \times 3 = \boxed{12}$ 倍
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-name">推论 2.1 二杠以上倍率</div>
+                    <div class="rule-desc">
+                        对于 $x \geq 2$ 的杠牌情况：<br>
+                        • 普通非跑风七小对：$k = 3$<br>
+                        • 七小对跑风：$k = 4$
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">特殊牌型倍率</h2>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 2.2 清一色</div>
+                    <div class="rule-desc">
+                        设牌组花色集合 $C$，当 $|C| = 1$（除对子外）时构成清一色。
+                    </div>
+                    <div class="formula">
+                        $$k_{\text{清一色}} = \begin{cases}
+                        6 & \text{if 对子} \notin C \\
+                        12 & \text{if 对子} \in C \\
+                        48 & \text{if 七小对} \land |C| = 1
+                        \end{cases}$$
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 2.2</div>
+                        <div class="example-content">
+                            <strong>情况 A：</strong>$\{123\text{万}, 456\text{万}, 789\text{万}, 111\text{万}, 22\text{条}\}$<br>
+                            分析：$C = \{\text{万}\}$，对子为条（$\notin C$）<br>
+                            倍率：$k = 6$<br><br>
+                            
+                            <strong>情况 B：</strong>$\{11\text{万}, 22\text{万}, 33\text{万}, 44\text{万}, 55\text{万}, 66\text{万}, 77\text{万}\}$<br>
+                            分析：七小对且 $|C| = 1$<br>
+                            倍率：$k = \boxed{48}$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 2.3 绿一色</div>
+                    <div class="rule-desc">设绿色牌集合 $G = \{2,3,4,6,8\}_{\text{条}} \cup \{\text{发}\}$，当手牌 $H \subseteq G$ 时构成绿一色。</div>
+                    <span class="important-multiplier">普通(对子不满足) 36×</span>
+                    <span class="important-multiplier">普通(对子满足) 72×</span>
+                    <span class="important-multiplier">七小对 144×</span>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 2.3</div>
+                        <div class="example-content">
+                            设 $H = \{234\text{条}, 456\text{条}, \text{发发发}, 888\text{条}, 22\text{万}\}$<br>
+                            验证：除对子外 $H \setminus \{22\text{万}\} \subseteq G$<br>
+                            结论：$k = 36$ 倍
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 2.4 黑一色</div>
+                    <div class="rule-desc">设黑色牌集合 $B = \{\text{东, 南, 西, 北, 白}, 8\text{筒}\}$，当手牌 $H \subseteq B$ 时构成黑一色。</div>
+                    <span class="important-multiplier">普通(对子不满足) 48×</span>
+                    <span class="important-multiplier">普通(对子满足) 96×</span>
+                    <span class="important-multiplier">七小对 240×</span>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 2.5 红绿色系</div>
+                    <div class="rule-desc">设红绿牌集合 $R \cup G$，当手牌满足色系约束时构成红绿色系。</div>
+                    <span class="multiplier">普通(对子不满足) 8×</span>
+                    <span class="important-multiplier">普通(对子满足) 16×</span>
+                    <span class="important-multiplier">七小对 120×</span>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 2.6 九莲宝灯</div>
+                    <div class="rule-desc">设同花色序列 $S = \{111, 2, 3, 4, 5, 6, 7, 8, 999\}_c$，其中 $c \in \{\text{万, 条, 筒}\}$，对任意 $x \in [1,9]$ 均可胡牌。</div>
+                    <div class="formula">
+                        $k_{\text{九莲}} = \begin{cases}
+                        36 & \text{if } \forall x \in [1,9], \text{ 摸 } x \text{ 可胡} \\
+                        24 & \text{if 单调听一张} \\
+                        72 & \text{if 胡牌}
+                        \end{cases}$
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 2.6</div>
+                        <div class="example-content">
+                            设 $H = \{111\text{万}, 2\text{万}, 3\text{万}, 4\text{万}, 5\text{万}, 6\text{万}, 7\text{万}, 8\text{万}, 999\text{万}\}$<br>
+                            验证：摸到任何万字 $x \in \{1,2,\ldots,9\}$ 均可胡<br>
+                            结论：九莲宝灯，$k = \boxed{72}$ 倍
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 2.7 清龙</div>
+                    <div class="rule-desc">顺子序列中包含连续序列 $\{1,2,3,4,5,6,7,8,9\}_c$，其中 $c$ 为同一花色。</div>
+                    <span class="important-multiplier">倍率 24×</span>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 2.7</div>
+                        <div class="example-content">
+                            设 $H = \{123\text{万}, 456\text{万}, 789\text{万}, \text{东东东}, 22\text{条}\}$<br>
+                            验证：万子顺子组成 $\{1,2,\ldots,9\}_{\text{万}}$ 连龙<br>
+                            结论：$k = 24$ 倍
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 2.8 一色三连顺</div>
+                    <div class="rule-desc">存在三副同花色连续顺子构成和牌。</div>
+                    <div class="formula">
+                        $\exists n \in [1,7], c \in \{\text{万, 条, 筒}\}, \text{ s.t. } \{n(n+1)(n+2)\}_c, \{(n+1)(n+2)(n+3)\}_c, \{(n+2)(n+3)(n+4)\}_c \subset H$
+                    </div>
+                    <span class="important-multiplier">倍率 64×</span>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 2.8</div>
+                        <div class="example-content">
+                            设 $H = \{123\text{万}, 234\text{万}, 345\text{万}, \text{东东东}, 88\text{条}\}$<br>
+                            验证：三副万子连续顺子 $(n=1, c=\text{万})$<br>
+                            结论：$k = \boxed{64}$ 倍
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 2.9 一色四连顺</div>
+                    <div class="rule-desc">存在四副同花色连续顺子构成和牌。</div>
+                    <div class="formula">
+                        $\exists n \in [1,6], c, \text{ s.t. } \{n(n+1)(n+2)\}_c, \ldots, \{(n+3)(n+4)(n+5)\}_c \subset H$
+                    </div>
+                    <span class="important-multiplier">倍率 ∞ (加满)</span>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 2.9</div>
+                        <div class="example-content">
+                            设 $H = \{123\text{万}, 234\text{万}, 345\text{万}, 456\text{万}, 77\text{万}\}$<br>
+                            验证：四副万子连续顺子<br>
+                            结论：$k = \boxed{\infty}$ 倍（天胡）
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 2.10 大四喜</div>
+                    <div class="rule-desc">杠牌次数 $x = 4$，不遵循定理 2.1 的倍率递推。</div>
+                    <span class="important-multiplier">倍率 120×</span>
+                    <div class="note" style="margin-top: 10px;">注：该牌型倍率为特殊规定，不符合杠倍率公式 $k = 2^{x-1}$</div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">定理 2.11 十八罗汉</div>
+                    <div class="rule-desc">四风各杠，即 $\{\text{东东东东, 南南南南, 西西西西, 北北北北}\}$，对子为双红中，不允许配子。</div>
+                    <div class="formula">
+                        $H = \{(\text{东})^4, (\text{南})^4, (\text{西})^4, (\text{北})^4, \text{中中}\}, \quad \text{配子} = \emptyset$
+                    </div>
+                    <span class="important-multiplier">倍率 ∞</span>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 2.11</div>
+                        <div class="example-content">
+                            设 $H = \{\text{东}^4\text{(杠)}, \text{南}^4\text{(杠)}, \text{西}^4\text{(杠)}, \text{北}^4\text{(杠)}, \text{中中}\}$<br>
+                            验证：四风各杠 + 红中对子，无配子<br>
+                            结论：十八罗汉，$k = \boxed{\infty}$ 倍（天胡）
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">倍率叠加规则</h2>
+                
+                <div class="theorem-box">
+                    <div class="theorem-title">定理 2.12 配子倍率乘法</div>
+                    每次打出配子，倍率乘以 2。设打出配子次数为 $m$，则最终倍率：
+                    $k_{\text{final}} = k_{\text{base}} \times 2^m$
+                </div>
+
+                <div class="example">
+                    <div class="example-title">📋 示例 2.12</div>
+                    <div class="example-content">
+                        设基础倍率 $k_{\text{base}} = 12$（清一色对子满足）<br>
+                        打出 1 次配子：$k = 12 \times 2^1 = 24$ 倍<br>
+                        打出 2 次配子：$k = 12 \times 2^2 = 48$ 倍<br>
+                        打出 3 次配子：$k = 12 \times 2^3 = \boxed{96}$ 倍
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="special" class="content-section">
+            <div class="card">
+                <h2 class="card-title">特殊规则与惩罚机制</h2>
+
+                <div class="rule-item">
+                    <div class="rule-name">规则 3.1 碰牌时限</div>
+                    <div class="rule-desc">
+                        设碰牌响应时间 $t \leq 3$ 秒，超时则失去碰牌权利。
+                    </div>
+                    <div class="formula">
+                        $\text{碰牌有效} \iff t \in [0, 3] \text{ 秒}$
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">规则 3.2 相公惩罚</div>
+                    <div class="rule-desc">
+                        在当前玩家开始摸牌后检测到缺牌或多牌现象，记为相公。
+                    </div>
+                    <div class="formula">
+                        $P_{\text{相公}} = \begin{cases}
+                        -4 & \text{if 选择继续摸牌} \\
+                        -2 & \text{if 选择弃牌}
+                        \end{cases}$
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 3.2</div>
+                        <div class="example-content">
+                            设玩家 $A$ 手牌数量 $|H_A| = 15 \neq 14$<br>
+                            情况 1：选择继续 → 扣分 $P = -4$<br>
+                            情况 2：选择弃牌 → 扣分 $P = -2$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">规则 3.3 炸胡惩罚</div>
+                    <div class="rule-desc">
+                        摊牌后验证未满足胡牌条件，记为炸胡。设其他玩家集合 $O$，则 $\forall p \in O$，得分增加。
+                    </div>
+                    <div class="formula">
+                        $\forall p \in O, \quad S_p := S_p + 2$
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 3.3</div>
+                        <div class="example-content">
+                            玩家 $A$ 宣称胡牌，摊牌后发现未满足胡牌条件<br>
+                            则 $\forall p \in \{B, C, D\}$，得分 $S_p := S_p + 2$<br>
+                            玩家 $A$ 本局得分 $S_A = 0$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item special-rule">
+                    <div class="rule-name">规则 3.4 出配子倍率递增</div>
+                    <div class="rule-desc">
+                        每次打出配子，当前倍率乘以 2。设打出次数为 $m$，原倍率为 $k_0$。
+                    </div>
+                    <div class="formula">
+                        $k(m) = k_0 \times 2^m, \quad m \in \mathbb{N}$
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">📋 示例 3.4</div>
+                        <div class="example-content">
+                            初始倍率 $k_0 = 12$ 倍（清一色）<br>
+                            第 1 次出配子：$k(1) = 12 \times 2^1 = 24$ 倍<br>
+                            第 2 次出配子：$k(2) = 12 \times 2^2 = 48$ 倍<br>
+                            第 3 次出配子：$k(3) = 12 \times 2^3 = \boxed{96}$ 倍
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">附注</div>
+                    本规则体系基于概率论与博弈论最优性策略理论构建，旨在平衡竞技性与趣味性。所有倍率与惩罚机制均经过数学建模与实证分析验证。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const sections = document.querySelectorAll('.content-section');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            sections.forEach(section => section.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            document.getElementById(tabName).style.animation = 'none';
+            setTimeout(() => {
+                document.getElementById(tabName).style.animation = 'fadeInUp 0.5s ease';
+                if (window.MathJax) {
+                    MathJax.typesetPromise();
+                }
+            }, 10);
+        }
+
+        (function(){
+    if(window.renderMathInElement){
+        renderMathInElement(document.body,{
+            delimiters:[
+                {left:'$$', right:'$$', display:true},
+                {left:'\\[', right:'\\]', display:true},
+                {left:'$', right:'$', display:false},
+                {left:'\\(', right:'\\)', display:false}
+            ],
+            throwOnError:false
+        });
+        console.log('KaTeX: renderMathInElement done');
+        return;
+    }
+    if(window.MathJax && MathJax.typesetPromise){
+        MathJax.typesetPromise().then(function(){ console.log('MathJax: typesetPromise done'); })
+        .catch(function(err){ console.error('MathJax error', err); });
+        return;
+    }
+    var s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js';
+    s.onload=function(){
+        try{
+            renderMathInElement(document.body,{
+                delimiters:[
+                    {left:'$$', right:'$$', display:true},
+                    {left:'\\[', right:'\\]', display:true},
+                    {left:'$', right:'$', display:false},
+                    {left:'\\(', right:'\\)', display:false}
+                ],
+                throwOnError:false
+            });
+            console.log('KaTeX loaded and rendered');
+        }catch(e){
+            console.error('KaTeX render failed', e);
+        }
+    };
+    s.onerror=function(){ console.error('Failed to load KaTeX auto-render script'); };
+    document.head.appendChild(s);
+})();
+
+
+        window.MathJax = {
+            tex: {
+                inlineMath: [[', ']],
+                displayMath: [['$', '$']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    MathJax.startup.promise.then(() => {
+                        console.log('MathJax initial typesetting complete');
+                    });
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    MathJax.typesetPromise().then(() => {
+                        console.log('MathJax rendering complete');
+                    }).catch((err) => console.log('MathJax error:', err));
+                }
+            }, 500);
+        });
+    </script>
