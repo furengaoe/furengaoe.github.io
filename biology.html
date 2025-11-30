@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 0.8s ease-out;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .control-group {
+            margin-bottom: 40px;
+        }
+
+        .label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .number-selector {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .number-btn {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #667eea;
+            background: white;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: 600;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .number-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .number-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.05);
+        }
+
+        .draw-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .draw-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .draw-btn:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            margin-top: 40px;
+            min-height: 100px;
+        }
+
+        .result-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px 30px;
+            border-radius: 18px;
+            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .copyright {
+            margin-top: 40px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .copyright-line {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="control-group">
+            <span class="label">选择抽取人数</span>
+            <div class="number-selector">
+                <button class="number-btn active" data-num="1">1</button>
+                <button class="number-btn" data-num="2">2</button>
+                <button class="number-btn" data-num="3">3</button>
+                <button class="number-btn" data-num="4">4</button>
+                <button class="number-btn" data-num="5">5</button>
+            </div>
+        </div>
+
+        <button class="draw-btn" onclick="drawNames()">开始抽取</button>
+
+        <div class="results" id="results"></div>
+    </div>
+
+    <div class="copyright">
+        <div class="copyright-line">辅礽考试院 2024-2025</div>
+        <div class="copyright-line">made by amlhdsan · version 1.0</div>
+    </div>
+
+    <script>
+        const students = [
+            { name: "曹志远", rank: 6, weight: 2 },
+            { name: "陈宇涵", rank: 37, weight: 4 },
+            { name: "陈泽轩", rank: 50, weight: 5 },
+            { name: "程子豪", rank: 14, weight: 3 },
+            { name: "丁许萌", rank: 29, weight: 3 },
+            { name: "窦世杰", rank: 29, weight: 3 },
+            { name: "方若涵", rank: 6, weight: 2 },
+            { name: "高扬", rank: 10, weight: 2 },
+            { name: "郜研", rank: 23, weight: 3 },
+            { name: "古瑾祺", rank: 29, weight: 3 },
+            { name: "胡文涛", rank: 37, weight: 4 },
+            { name: "胡雪婷", rank: 23, weight: 3 },
+            { name: "胡展博", rank: 40, weight: 4 },
+            { name: "黄峻熙", rank: 47, weight: 5 },
+            { name: "黄振轩", rank: 29, weight: 3 },
+            { name: "雷荆楚", rank: 40, weight: 4 },
+            { name: "李菁菁", rank: 14, weight: 3 },
+            { name: "马添羽", rank: 2, weight: 2 },
+            { name: "缪语博", rank: 23, weight: 3 },
+            { name: "缪子恒", rank: 23, weight: 3 },
+            { name: "潘宇豪", rank: 29, weight: 3 },
+            { name: "钱汇泉", rank: 14, weight: 3 },
+            { name: "施孝诚", rank: 37, weight: 4 },
+            { name: "宋佳妮", rank: 10, weight: 2 },
+            { name: "孙浩哲", rank: 40, weight: 4 },
+            { name: "陶雅婷", rank: 6, weight: 2 },
+            { name: "陶宇轩", rank: 6, weight: 2 },
+            { name: "童彦宸", rank: 5, weight: 2 },
+            { name: "王明", rank: 2, weight: 2 },
+            { name: "魏子晗", rank: 40, weight: 4 },
+            { name: "温熙然", rank: 10, weight: 2 },
+            { name: "吴智博", rank: 29, weight: 3 },
+            { name: "夏菁菁", rank: 48, weight: 5 },
+            { name: "肖伟杰", rank: 23, weight: 3 },
+            { name: "杨浩宇", rank: 48, weight: 5 },
+            { name: "尹领", rank: 29, weight: 3 },
+            { name: "袁泽浠", rank: 14, weight: 3 },
+            { name: "张一鸣", rank: 40, weight: 4 },
+            { name: "张宇涵", rank: 40, weight: 4 },
+            { name: "张语彤", rank: 14, weight: 3 },
+            { name: "张泽基", rank: 14, weight: 3 },
+            { name: "张中宜", rank: 14, weight: 3 },
+            { name: "章哲瀚", rank: 1, weight: 2 },
+            { name: "赵瑞琪", rank: 14, weight: 3 },
+            { name: "周澄镜", rank: 29, weight: 3 },
+            { name: "周仁龙", rank: 2, weight: 2 },
+            { name: "周一凡", rank: 23, weight: 3 },
+            { name: "周亦凡", rank: 51, weight: 5 },
+            { name: "周子可", rank: 14, weight: 3 },
+            { name: "朱靖宇", rank: 13, weight: 3 },
+            { name: "朱俊逸", rank: 40, weight: 4 }
+        ];
+
+        let selectedCount = 1;
+
+        document.querySelectorAll('.number-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.number-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedCount = parseInt(this.dataset.num);
+            });
+        });
+
+        function drawNames() {
+            const pool = [];
+            students.forEach(student => {
+                for (let i = 0; i < student.weight; i++) {
+                    pool.push(student.name);
+                }
+            });
+
+            const selected = [];
+            const usedNames = new Set();
+
+            while (selected.length < selectedCount && selected.length < students.length) {
+                const idx = Math.floor(Math.random() * pool.length);
+                const name = pool[idx];
+                if (!usedNames.has(name)) {
+                    selected.push(name);
+                    usedNames.add(name);
+                }
+            }
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+            
+            selected.forEach((name, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'result-item';
+                    div.textContent = name;
+                    resultsDiv.appendChild(div);
+                }, index * 200);
+            });
+        }
+    </script>
+</body>
+</html>
