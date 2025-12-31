@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>总结 2025，憧憬 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'STSong', 'SimSun', serif;
+            background: linear-gradient(135deg, #d4000d 0%, #ff0000 50%, #ff3838 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ffd700;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .lantern {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #ff4444, #cc0000);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: 0 0 30px rgba(255, 200, 0, 0.6);
+            animation: swing 3s ease-in-out infinite;
+        }
+
+        .lantern::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 10px;
+            background: #8b0000;
+            border-radius: 50%;
+        }
+
+        .lantern::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 15px;
+            background: #ffd700;
+        }
+
+        .lantern:nth-child(1) { top: 5%; left: 10%; animation-delay: 0s; }
+        .lantern:nth-child(2) { top: 8%; right: 15%; animation-delay: 0.5s; }
+        .lantern:nth-child(3) { top: 5%; left: 85%; animation-delay: 1s; }
+        .lantern:nth-child(4) { top: 8%; right: 80%; animation-delay: 1.5s; }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(8deg); }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 7rem;
+            margin-bottom: 50px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 1),
+                         0 0 60px rgba(255, 215, 0, 0.8),
+                         0 8px 20px rgba(0,0,0,0.4);
+            animation: fadeInScale 1.5s ease;
+            letter-spacing: 20px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .year-transition {
+            font-size: 6rem;
+            font-weight: bold;
+            margin: 50px 0;
+            animation: glow 2s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(255, 215, 0, 1),
+                         0 0 80px rgba(255, 215, 0, 0.9),
+                         0 0 100px rgba(255, 255, 0, 0.7);
+            color: #ffeb3b;
+        }
+
+        .message {
+            font-size: 3rem;
+            margin: 40px 0;
+            opacity: 1;
+            animation: fadeInUp 2s ease;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            font-weight: bold;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 50px rgba(255, 215, 0, 1),
+                             0 0 80px rgba(255, 215, 0, 0.9),
+                             0 0 100px rgba(255, 255, 0, 0.7);
+            }
+            50% {
+                text-shadow: 0 0 70px rgba(255, 215, 0, 1),
+                             0 0 100px rgba(255, 215, 0, 1),
+                             0 0 120px rgba(255, 255, 0, 0.9);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+                letter-spacing: 5px;
+            }
+            .year-transition {
+                font-size: 3rem;
+            }
+            .message {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lantern"></div>
+    <div class="lantern"></div>
+    <div class="lantern"></div>
+    <div class="lantern"></div>
+
+    <canvas class="fireworks" id="fireworks"></canvas>
+
+    <div class="container">
+        <h1>总结 2025 憧憬 2026</h1>
+        <p class="message">新年快乐 · 万事如意</p>
+    </div>
+
+    <div class="footer">
+        <p>Copyright © 2024-2025 Fureng Academy of Examination | Made by amlhdsan</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 10,
+                    y: (Math.random() - 0.5) * 10
+                };
+                this.alpha = 1;
+                this.decay = Math.random() * 0.015 + 0.015;
+                this.size = Math.random() * 3 + 2;
+            }
+
+            update() {
+                this.velocity.y += 0.15;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.alpha -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        let particles = [];
+
+        function createFirework() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height * 0.6;
+            const colors = ['#ffd700', '#ffff00', '#fff', '#ffb700', '#ffa500'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+
+            for (let i = 0; i < 60; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((particle, index) => {
+                if (particle.alpha <= 0) {
+                    particles.splice(index, 1);
+                } else {
+                    particle.update();
+                    particle.draw();
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        setInterval(createFirework, 800);
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
