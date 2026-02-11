@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>辅礽考试院 · 役种规定 V1.0.2</title>
+    <style>
+        :root {
+            --bg: #f0f2f5;
+            --glass: rgba(255, 255, 255, 0.8);
+            --primary: #1a3a5f;
+            --accent: #e67e22;
+            /* 番级色彩体系 */
+            --c-neg: #636e72;   /* 负番：灰 */
+            --c-1: #0984e3;     /* 1番：蓝 */
+            --c-2: #00b894;     /* 2番：绿 */
+            --c-3: #6c5ce7;     /* 3番：紫 */
+            --c-5: #d63031;     /* 5番：红 */
+            --c-6: #e17055;     /* 6番：橙 */
+            --c-mangan: #fdcb6e;/* 满贯：金 */
+            --c-haneman: #ff7675;/* 跳满：粉 */
+            --c-yakuman: linear-gradient(135deg, #6c5ce7, #a29bfe); /* 役满：幻彩 */
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+
+        body {
+            font-family: 'PingFang SC', 'SF Pro Display', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(#d1d8e0 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #2d3436;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* 顶部 UI 头部 */
+        header {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .inst { font-weight: 700; letter-spacing: 4px; color: var(--primary); opacity: 0.8; margin-bottom: 8px; font-size: 0.9rem; }
+        h1 { margin: 10px 0; font-size: 2.2rem; background: linear-gradient(90deg, #1a3a5f, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* 凡例 */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        .tag-info {
+            padding: 4px 12px;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .m-sym { color: #d63031; font-weight: bold; }
+        .f-sym { color: #0984e3; font-weight: bold; }
+
+        /* 列表容器 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        /* 章节卡片 */
+        section {
+            background: var(--glass);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+        }
+
+        section:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 6px;
+            height: 24px;
+            border-radius: 3px;
+        }
+
+        /* 番级色彩装饰 */
+        .s-neg .section-title::before { background: var(--c-neg); }
+        .s-1 .section-title::before { background: var(--c-1); }
+        .s-2 .section-title::before { background: var(--c-2); }
+        .s-3 .section-title::before { background: var(--c-3); }
+        .s-5 .section-title::before { background: var(--c-5); }
+        .s-6 .section-title::before { background: var(--c-6); }
+        .s-mangan .section-title::before { background: var(--c-mangan); }
+        .s-haneman .section-title::before { background: var(--c-haneman); }
+        .s-yakuman .section-title::before { background: var(--c-yakuman); }
+
+        /* 役种微章 */
+        .yaku-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .yaku-item {
+            padding: 8px 14px;
+            background: #fff;
+            border-radius: 12px;
+            font-size: 0.92rem;
+            border: 1px solid #edf2f7;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #4a5568;
+        }
+
+        .yaku-item:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .yaku-item small { opacity: 0.6; font-size: 0.75rem; margin-left: 4px; }
+
+        footer {
+            margin-top: 60px;
+            padding: 40px;
+            text-align: center;
+            color: #a4b0be;
+            font-size: 0.85rem;
+        }
+
+        /* 役满特殊样式 */
+        .s-yakuman .yaku-item { border: 1px dashed #a29bfe; }
+        .s-yakuman-2 .section-title { color: #6c5ce7; }
+        .s-yakuman-10 { grid-column: 1 / -1; background: #2d3436; color: #fff; }
+        .s-yakuman-10 .yaku-item { background: rgba(255,255,255,0.1); color: #fab1a0; border: none; font-weight: bold; font-size: 1.2rem; }
+
+        @media (max-width: 768px) {
+            .grid-container { grid-template-columns: 1fr; }
+            header { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="inst">辅礽考试院 · 立直麻将研究所</div>
+        <h1>番种及役种规定</h1>
+        <div class="legend">
+            <div class="tag-info"><span class="m-sym">~</span> 门前清限定</div>
+            <div class="tag-info"><span class="f-sym">·</span> 副露减一番</div>
+            <div class="tag-info">Ver 1.0.2</div>
+        </div>
+    </header>
+
+    <div class="grid-container">
+        <section class="s-neg">
+            <div class="section-title">负四番</div>
+            <div class="yaku-box">
+                <div class="yaku-item">门尼松</div>
+            </div>
+        </section>
+
+        <section class="s-1">
+            <div class="section-title">一番</div>
+            <div class="yaku-box">
+                <div class="yaku-item">小三风</div>
+                <div class="yaku-item">花牌</div>
+                <div class="yaku-item">立直<span class="m-sym">~</span></div>
+                <div class="yaku-item">两立直<span class="m-sym">~</span></div>
+                <div class="yaku-item">海底捞月</div>
+                <div class="yaku-item">河底捞鱼</div>
+                <div class="yaku-item">平和<span class="m-sym">~</span></div>
+                <div class="yaku-item">一发<span class="m-sym">~</span></div>
+                <div class="yaku-item">断幺九<small>(三番缚)</small></div>
+                <div class="yaku-item">一杯口<span class="m-sym">~</span></div>
+                <div class="yaku-item">杠振</div>
+                <div class="yaku-item">燕返</div>
+                <div class="yaku-item">五心通贯</div>
+                <div class="yaku-item">十二落抬</div>
+                <div class="yaku-item">门前清自摸和<span class="m-sym">~</span></div>
+                <div class="yaku-item">岭上开花</div>
+                <div class="yaku-item">枪杠</div>
+            </div>
+        </section>
+
+        <section class="s-2">
+            <div class="section-title">二番</div>
+            <div class="yaku-box">
+                <div class="yaku-item">三色同顺<span class="f-sym">·</span></div>
+                <div class="yaku-item">三色同刻</div>
+                <div class="yaku-item">三节刻<small>(三连刻)</small></div>
+                <div class="yaku-item">跳牌刻<small>(三嵌刻)</small></div>
+                <div class="yaku-item">三风和</div>
+                <div class="yaku-item">赤三色</div>
+                <div class="yaku-item">三暗刻</div>
+                <div class="yaku-item">两立直<span class="m-sym">~</span></div>
+                <div class="yaku-item">开立直<span class="m-sym">~</span></div>
+                <div class="yaku-item">超一发<span class="m-sym">~</span></div>
+                <div class="yaku-item">混全带幺九<span class="f-sym">·</span></div>
+                <div class="yaku-item">顶三刻</div>
+                <div class="yaku-item">筋牌刻</div>
+                <div class="yaku-item">二暗杠</div>
+                <div class="yaku-item">混老头</div>
+                <div class="yaku-item">小三元</div>
+                <div class="yaku-item">三气通贯</div>
+                <div class="yaku-item">一气通贯</div>
+                <div class="yaku-item">对对和</div>
+                <div class="yaku-item">七对子</div>
+                <div class="yaku-item">五门齐</div>
+                <div class="yaku-item">连杠开花</div>
+                <div class="yaku-item">连杠枪杠</div>
+            </div>
+        </section>
+
+        <section class="s-3">
+            <div class="section-title">三番</div>
+            <div class="yaku-box">
+                <div class="yaku-item">混一色<span class="f-sym">·</span></div>
+                <div class="yaku-item">二开立直<span class="m-sym">~</span></div>
+                <div class="yaku-item">断红和<span class="f-sym">·</span></div>
+                <div class="yaku-item">顶上三刻</div>
+                <div class="yaku-item">三元七对子<span class="m-sym">~</span></div>
+                <div class="yaku-item">四喜七对子<span class="m-sym">~</span></div>
+                <div class="yaku-item">纯全带幺九<span class="f-sym">·</span></div>
+                <div class="yaku-item">三杯口<span class="f-sym">·</span></div>
+                <div class="yaku-item">同顺二杯口<span class="m-sym">~</span></div>
+            </div>
+        </section>
+
+        <section class="s-5">
+            <div class="section-title">五番</div>
+            <div class="yaku-box">
+                <div class="yaku-item">二杯口<span class="m-sym">~</span></div>
+                <div class="yaku-item">九筒捞鱼</div>
+                <div class="yaku-item">一筒捞月</div>
+                <div class="yaku-item">金鸡独立</div>
+                <div class="yaku-item">独钓寒江雪</div>
+                <div class="yaku-item">五筒开花</div>
+                <div class="yaku-item">二索抢杠</div>
+            </div>
+        </section>
+
+        <section class="s-6">
+            <div class="section-title">六番</div>
+            <div class="yaku-box">
+                <div class="yaku-item">清断红和<span class="f-sym">·</span></div>
+                <div class="yaku-item">清一色<span class="f-sym">·</span></div>
+                <div class="yaku-item">三连杠</div>
+                <div class="yaku-item">三序数</div>
+                <div class="yaku-item">四花和</div>
+                <div class="yaku-item">幺九龙<span class="m-sym">~</span></div>
+                <div class="yaku-item">純偏全帯么九<span class="f-sym">·</span></div>
+            </div>
+        </section>
+
+        <section class="s-mangan">
+            <div class="section-title">满贯</div>
+            <div class="yaku-box">
+                <div class="yaku-item">流局满贯</div>
+            </div>
+        </section>
+
+        <section class="s-haneman">
+            <div class="section-title">跳满</div>
+            <div class="yaku-box">
+                <div class="yaku-item">一色流局</div>
+            </div>
+        </section>
+
+        <section class="s-yakuman">
+            <div class="section-title">役满</div>
+            <div class="yaku-box">
+                <div class="yaku-item">四节刻</div>
+                <div class="yaku-item">四跳牌刻</div>
+                <div class="yaku-item">五福临门<span class="m-sym">~</span></div>
+                <div class="yaku-item">天和<span class="m-sym">~</span></div>
+                <div class="yaku-item">地和<span class="m-sym">~</span></div>
+                <div class="yaku-item">人和<span class="m-sym">~</span></div>
+                <div class="yaku-item">国士无双<span class="m-sym">~</span></div>
+                <div class="yaku-item">四暗刻<span class="m-sym">~</span></div>
+                <div class="yaku-item">四杠落抬</div>
+                <div class="yaku-item">花天月地</div>
+                <div class="yaku-item">超三风</div>
+                <div class="yaku-item">三暗杠</div>
+                <div class="yaku-item">黑一色</div>
+                <div class="yaku-item">累计役满<small>(四倍满)</small></div>
+                <div class="yaku-item">混老七对子<span class="m-sym">~</span></div>
+                <div class="yaku-item">绿一色</div>
+                <div class="yaku-item">十三不靠<span class="m-sym">~</span></div>
+                <div class="yaku-item">十三不搭<span class="m-sym">~</span></div>
+                <div class="yaku-item">七星不靠<span class="m-sym">~</span></div>
+                <div class="yaku-item">清老头</div>
+                <div class="yaku-item">大车轮<span class="m-sym">~</span></div>
+                <div class="yaku-item">大竹林<span class="m-sym">~</span></div>
+                <div class="yaku-item">大数邻<span class="m-sym">~</span></div>
+                <div class="yaku-item">小车轮<span class="m-sym">~</span></div>
+                <div class="yaku-item">小竹林<span class="m-sym">~</span></div>
+                <div class="yaku-item">小数邻<span class="m-sym">~</span></div>
+                <div class="yaku-item">中车轮<span class="m-sym">~</span></div>
+                <div class="yaku-item">中竹林<span class="m-sym">~</span></div>
+                <div class="yaku-item">中数邻<span class="m-sym">~</span></div>
+                <div class="yaku-item">二序数</div>
+                <div class="yaku-item">三种杠</div>
+                <div class="yaku-item">四杠枪杠</div>
+                <div class="yaku-item">铳一色</div>
+                <div class="yaku-item">七花和</div>
+                <div class="yaku-item">八连庄</div>
+            </div>
+        </section>
+
+        <section class="s-yakuman s-yakuman-2">
+            <div class="section-title">二倍役满</div>
+            <div class="yaku-box">
+                <div class="yaku-item">九莲宝灯<span class="m-sym">~</span></div>
+                <div class="yaku-item">石上三年</div>
+                <div class="yaku-item">红孔雀</div>
+                <div class="yaku-item">超清一色</div>
+                <div class="yaku-item">清海湖<small>(副露减为役满)</small></div>
+                <div class="yaku-item">四暗刻单骑</div>
+                <div class="yaku-item">国士无双十三面</div>
+                <div class="yaku-item">三色同暗刻</div>
+                <div class="yaku-item">五连刻</div>
+                <div class="yaku-item">大七星<small>(纯正字一色)</small></div>
+                <div class="yaku-item">纯正黑一色</div>
+                <div class="yaku-item">三色同杠</div>
+                <div class="yaku-item">超大三元</div>
+                <div class="yaku-item">八仙过海</div>
+                <div class="yaku-item">一色四通顺<span class="m-sym">~</span></div>
+                <div class="yaku-item">南北战争</div>
+            </div>
+        </section>
+
+        <section class="s-yakuman">
+            <div class="section-title">三倍役满</div>
+            <div class="yaku-box">
+                <div class="yaku-item">纯正九莲宝灯<span class="m-sym">~</span></div>
+                <div class="yaku-item">流局役满</div>
+                <div class="yaku-item">四连杠</div>
+                <div class="yaku-item">四杠子</div>
+                <div class="yaku-item">纯正四杠子</div>
+                <div class="yaku-item">超字一色</div>
+                <div class="yaku-item">超绿一色</div>
+                <div class="yaku-item">超清老头</div>
+                <div class="yaku-item">超小四喜</div>
+            </div>
+        </section>
+
+        <section class="s-yakuman">
+            <div class="section-title">四倍役满</div>
+            <div class="yaku-box">
+                <div class="yaku-item">四暗杠单骑<span class="m-sym">~</span></div>
+                <div class="yaku-item">超大四喜</div>
+                <div class="yaku-item">四杠花开</div>
+                <div class="yaku-item">水天一色</div>
+                <div class="yaku-item">八仙聚首</div>
+            </div>
+        </section>
+
+        <section class="s-yakuman-10">
+            <div class="section-title">十倍役满</div>
+            <div class="yaku-box">
+                <div class="yaku-item">门前清铳一色</div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2026 辅礽考试院 · 立直麻将研究所</p>
+        <p>学术规范 | 竞技公正 | 深度博弈</p>
+    </footer>
+</div>
+
+</body>
+</html>
